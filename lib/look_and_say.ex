@@ -1,28 +1,25 @@
 defmodule LookAndSay do
   @doc """
     ## Examples:
-    iex> LookAndSay.generate([2])
+    iex> LookAndSay.calc([2])
     [1, 2]
-    iex> LookAndSay.generate([1, 2])
+    iex> LookAndSay.calc([1, 2])
     [1, 1, 1, 2]
-    iex> LookAndSay.generate([1, 1, 1, 2])
+    iex> LookAndSay.calc([1, 1, 1, 2])
     [3, 1, 1, 2]
-    iex> LookAndSay.generate([3, 1, 1, 2])
+    iex> LookAndSay.calc([3, 1, 1, 2])
     [1, 3, 2, 1, 1, 2]
   """
 
-  def generate(value) do
-    [first | list] = value
-    answer = [[first], 1]
-
+  def calc(list) do
     if Enum.any?(list) do
-      answer = generate_answer(first, list)
+      normalize(next(list))
+    else
+      []
     end
-
-    answer_result(answer)
   end
 
-  defp answer_result(answer) do
+  defp normalize(answer) do
     [list | count] = answer
 
     Enum.chunk(list ++ count, 2) |> Enum.flat_map(fn(result) ->
@@ -30,7 +27,9 @@ defmodule LookAndSay do
     end)
   end
 
-  defp generate_answer(first, list) do
+  defp next(value) do
+    [first | list] = value
+
     Enum.reduce(list, [[first], 1], fn(number, result) ->
       [current | count] = result
 
